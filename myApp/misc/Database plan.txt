@@ -1,0 +1,79 @@
+Database Design:
+
+	Projects ->
+		Name : string
+		Columns : int
+	
+	Columns ->
+		Project_Id : int
+		Name : string
+		Limit : int?
+	
+	Items ->
+		Column_Id : int
+		Name : string
+		Content : string
+		Worker_Id : int
+
+	///
+	/// If users are getting in on this action 
+	///
+	Workers ->
+		Name : string
+		Profession : string
+	
+	Teams ->
+		Project_Id : int
+		Team_Name : string
+
+	TeamMembers ->
+		Team_Id : int
+		Worker_Id : int
+		PermissionLevel : int
+	
+
+
+
+CREATE TABLE [dbo].[Projects]
+(
+	[Project_Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[Name] NVARCHAR(50) NOT NULL,
+	[Columns] Tinyint NOT NULL /*0..255 n columns*/  
+)
+GO
+CREATE TABLE [dbo].[Workers]
+(
+	[Worker_Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+	[Name] NVARCHAR(50) NOT NULL
+)
+GO
+CREATE TABLE [dbo].[Columns]
+(
+	[Column_Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] NVARCHAR(50) NOT NULL,
+	[Limit] TINYINT NOT NULL, /*0..255 n limits*/  
+	CONSTRAINT FK_Project_Id FOREIGN KEY (Column_Id)
+	REFERENCES Projects (Project_Id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+)
+GO
+CREATE TABLE [dbo].[Items]
+(
+	[Item_Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] NVARCHAR(50) NOT NULL,
+	[Content] NVARCHAR(255) NOT NULL,
+
+	CONSTRAINT FK_Worker_Id FOREIGN KEY (Item_Id)
+	REFERENCES [dbo].[Workers] (Worker_Id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+	CONSTRAINT FK_Column_Id FOREIGN KEY (Item_Id)
+	REFERENCES [dbo].[Columns] (Column_Id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+
+)
+GO
+	
