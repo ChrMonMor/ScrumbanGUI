@@ -1,0 +1,41 @@
+Projekt Backlog:
+
+- Database skal laves
+	- Design?
+	- serveroprettelse
+	- 
+	
+- GUI oprettest
+	- CRUD for projekt, column, item
+		- Create x 3
+			- projekt: 
+				- havde en standard layout
+				- 
+		- Read x 3
+		- Update x 3
+		- Delete x 3
+	- pænt
+		- 
+	- drag and drop columns og items
+	
+	- Columns:
+		- begræse antal items
+			- Hård grænse 
+			- Bløde grænse
+
+	
+
+- API?
+	- laves den skal :(Yoda, jeg er)
+	
+	
+- Hvad ellers?
+	- Bruger (Users)?
+		- CRUD
+			- bruger info håndtering
+		- Rettigheder
+	- Temas?
+		- Tildeling af bruger til teams
+		- Tildeling af Teams til Projekt
+		- 
+	- Login
