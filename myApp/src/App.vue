@@ -6,12 +6,17 @@ import Projects from './components/Projects.vue'
 <script>
 
 export default {
-  
+  data() {
+    return {
+      num: 4
+    }
+  },
 }
 
 </script>
 <template>
-  <Projects></Projects>
+  <Projects
+  v-for="n in num"></Projects>
 </template>
 
 <style scoped>
