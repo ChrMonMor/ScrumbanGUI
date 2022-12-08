@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI\\ScrumbanAPI\\ScrumbanAPI.csproj": {}
+    "C:\\Users\\HFGF\\Vue\\Scrumban\\ScrumbanAPI\\ScrumbanAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI\\ScrumbanAPI\\ScrumbanAPI.csproj": {
+    "C:\\Users\\HFGF\\Vue\\Scrumban\\ScrumbanAPI\\ScrumbanAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI\\ScrumbanAPI\\ScrumbanAPI.csproj",
+        "projectUniqueName": "C:\\Users\\HFGF\\Vue\\Scrumban\\ScrumbanAPI\\ScrumbanAPI.csproj",
         "projectName": "ScrumbanAPI",
-        "projectPath": "C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI\\ScrumbanAPI\\ScrumbanAPI.csproj",
-        "packagesPath": "C:\\Users\\christian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI\\ScrumbanAPI\\obj\\",
+        "projectPath": "C:\\Users\\HFGF\\Vue\\Scrumban\\ScrumbanAPI\\ScrumbanAPI.csproj",
+        "packagesPath": "C:\\Users\\HFGF\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HFGF\\Vue\\Scrumban\\ScrumbanAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HFGF\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -42,6 +39,20 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNet.WebApi.Cors": {
+              "target": "Package",
+              "version": "[5.2.9, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
