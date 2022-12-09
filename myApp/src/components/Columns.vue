@@ -6,17 +6,22 @@ export default {
   components: {
     Item : Item
   },
-  data (){
-    return{
-        num: 3
-    }
+  data() {
+    return {
+      posts: null,
+    };
+  },
+  mounted () {
+    axios
+      .get('https://localhost:7026/Items')
+      .then(response => (this.posts = response.data))
   }
 }
 </script>
 
 <template>
     <div class="column"
-    v-for="n in num">
+    v-for="n in posts">
         <Item></Item>
     </div>
 </template>

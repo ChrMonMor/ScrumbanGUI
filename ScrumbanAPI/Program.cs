@@ -67,53 +67,71 @@ internal class Program
         });
 
         // Queries for Updating a row based on its id
-        app.MapGet("/Workers/{id}/{name}", (HttpRequest request) =>
+        app.MapGet("/Workers/Update/{id}/{name}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"update Workers set " +
-                $"Name = {request.RouteValues["name"]} " +
-                $"where Worker_Id = {request.RouteValues["id"]}"));
+            SqlUpdate($"update Workers set " + 
+                $"Name = '{request.RouteValues["name"]}' " + 
+                $"where Worker_Id = {request.RouteValues["id"]}");
         });
-        app.MapGet("/Projects/{id}/{name}", (HttpRequest request) =>
+        app.MapGet("/Projects/Update/{id}/{name}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"update Projects set " +
-                $"Name = {request.RouteValues["name"]} " +
-                $"where Worker_Id = {request.RouteValues["id"]}"));
+            SqlUpdate($"update Projects set " + 
+                $"Name = '{request.RouteValues["name"]}' " + 
+                $"where Worker_Id = {request.RouteValues["id"]}");
         });
-        app.MapGet("/Items/{id}/cid/{position}/{name}/{content}", (HttpRequest request) =>
+        app.MapGet("/Items/Update/{id}/{cid}/{position}/{name}/{content}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"update Items set " +
-                $"Column = {request.RouteValues["cid"]}, " +
-                $"Position = {request.RouteValues["name"]}, " +
-                $"Name = {request.RouteValues["name"]}, " +
-                $"Content = {request.RouteValues["content"]}  " +
-                $"where Worker_Id = {request.RouteValues["id"]}"));
+            SqlUpdate($"update Items set " +
+                $"Column_Id = {request.RouteValues["cid"]}, " +
+                $"Position = {request.RouteValues["name"]}, " + 
+                $"Name = '{request.RouteValues["name"]}', " + 
+                $"Content = '{request.RouteValues["content"]}'  " + 
+                $"where Worker_Id = {request.RouteValues["id"]}");
         });
-        app.MapGet("/Columns/{id}/{}/{name}/{limit}", (HttpRequest request) =>
+        app.MapGet("/Columns/Update/{id}/{position}/{name}/{limit}", (HttpRequest request) => // note that columns cant change projects
         {
-            return JsonConvert.SerializeObject(SqlCall($"update Columns set " +
-                $"Name = {request.RouteValues["name"]}, " +
+        SqlUpdate($"update Columns set " +
+                $"Position = {request.RouteValues["position"]}, " +
+                $"Name = '{request.RouteValues["name"]}', " +
                 $"Limit =  {request.RouteValues["limit"]}" +
-                $"where Worker_Id = {request.RouteValues["id"]}"));
+                $"where Worker_Id = {request.RouteValues["id"]}");
         });
 
-        // Queries for Craeting new rows in tables
-        app.MapGet("/Workers/{name}", (HttpRequest request) =>
+        // Queries for Creating a new row in tables
+        app.MapGet("/Workers/Create/{name}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"insert into Workers (Name) values ({request.RouteValues["name"]})"));
+            SqlUpdate($"insert into Workers (Name) values ('{request.RouteValues["name"]}')");
         });
-        app.MapGet("/Projects/{name}", (HttpRequest request) =>
+        app.MapGet("/Projects/Create/{name}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"insert into Projects (Name) values ({request.RouteValues["name"]})"));
+            SqlUpdate($"insert into Projects (Name) values ('{request.RouteValues["name"]}')");
         });
-        app.MapGet("/Items/{id}/{position}/{name}/{content}", (HttpRequest request) =>
+        app.MapGet("/Items/Create/{id}/{position}/{name}/{content}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"insert into Workers (name) values ({request.RouteValues["name"]})"));
+            SqlUpdate($"insert into Items (Column_Id, Position, Name, Content) values ({request.RouteValues["id"]}, {request.RouteValues["position"]}, '{request.RouteValues["name"]}', '{request.RouteValues["content"]}')");
         });
-        app.MapGet("/Columns/{id}/{name}/{limit}", (HttpRequest request) =>
+        app.MapGet("/Columns/Create/{id}/{position}/{name}/{limit}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall($"insert into Workers (name) values ({request.RouteValues["name"]})"));
+            SqlUpdate($"insert into Columns (Project_Id, Position, Name, Limit) values ({request.RouteValues["id"]}, {request.RouteValues["position"]}, '{request.RouteValues["name"]}', {request.RouteValues["limit"]})");
         });
 
+        // Queries for deleting a single row in a table
+        app.MapGet("/Workers/delete/{id}", (HttpRequest request) =>
+        {
+            SqlCall("delete from Workers where Worker_Id = " + request.RouteValues["id"]);
+        });
+        app.MapGet("/Projects/delete/{id}", (HttpRequest request) =>
+        {
+            SqlCall("delete from Projects where Project_Id = " + request.RouteValues["id"]);
+        });
+        app.MapGet("/Items/delete/{id}", (HttpRequest request) =>
+        {
+            SqlCall("delete from Items where Item_Id = " + request.RouteValues["id"]);
+        });
+        app.MapGet("/Columns/delete/{id}", (HttpRequest request) =>
+        {
+            SqlCall("delete from Columns where Column_Id = " + request.RouteValues["id"]);
+        });
 
 
         // runs the app and needs to be at the end!!!!

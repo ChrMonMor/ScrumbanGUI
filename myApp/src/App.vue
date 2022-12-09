@@ -20,10 +20,6 @@ export default {
 
 </script>
 <template>
-  
-  <div id="app">
-  {{ posts }}
-</div>
   <Projects
   v-for="n in posts"></Projects>
 </template>
