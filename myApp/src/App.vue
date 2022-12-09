@@ -13,13 +13,14 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:5268/Workers')
-      .then(response => (this.posts = response))
+      .get('https://localhost:7026/Workers')
+      .then(response => (this.posts = response.data))
   }
 }
 
 </script>
 <template>
+  
   <div id="app">
   {{ posts }}
 </div>
