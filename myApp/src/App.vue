@@ -13,15 +13,17 @@ export default {
   },
   mounted () {
     axios
-      .get('https://localhost:7026/Workers')
+      .get('https://localhost:7026/Projects')
       .then(response => (this.posts = response.data))
   }
 }
 
 </script>
 <template>
-  <Projects
-  v-for="n in posts"></Projects>
+  <div class="project" 
+  v-for="n in posts">
+    <Projects :ProjectsId=n.Project_Id></Projects>
+  </div>
 </template>
 
 <style scoped>

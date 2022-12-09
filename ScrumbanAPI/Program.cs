@@ -77,7 +77,7 @@ internal class Program
         {
             SqlUpdate($"update Projects set " + 
                 $"Name = '{request.RouteValues["name"]}' " + 
-                $"where Worker_Id = {request.RouteValues["id"]}");
+                $"where Project_Id = {request.RouteValues["id"]}");
         });
         app.MapGet("/Items/Update/{id}/{cid}/{position}/{name}/{content}", (HttpRequest request) =>
         {
@@ -86,7 +86,7 @@ internal class Program
                 $"Position = {request.RouteValues["name"]}, " + 
                 $"Name = '{request.RouteValues["name"]}', " + 
                 $"Content = '{request.RouteValues["content"]}'  " + 
-                $"where Worker_Id = {request.RouteValues["id"]}");
+                $"where Item_Id = {request.RouteValues["id"]}");
         });
         app.MapGet("/Columns/Update/{id}/{position}/{name}/{limit}", (HttpRequest request) => // note that columns cant change projects
         {
@@ -94,7 +94,7 @@ internal class Program
                 $"Position = {request.RouteValues["position"]}, " +
                 $"Name = '{request.RouteValues["name"]}', " +
                 $"Limit =  {request.RouteValues["limit"]}" +
-                $"where Worker_Id = {request.RouteValues["id"]}");
+                $"where Column_Id = {request.RouteValues["id"]}");
         });
 
         // Queries for Creating a new row in tables
@@ -131,6 +131,12 @@ internal class Program
         app.MapGet("/Columns/delete/{id}", (HttpRequest request) =>
         {
             SqlCall("delete from Columns where Column_Id = " + request.RouteValues["id"]);
+        });
+
+        // Query for getting columns for a project
+        app.MapGet("/Project/Columns/{id}", (HttpRequest request) =>
+        {
+            return JsonConvert.SerializeObject(SqlCall("select * from Columns where Project_Id = " + request.RouteValues["id"]));
         });
 
 
