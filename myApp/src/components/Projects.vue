@@ -34,7 +34,7 @@ export default {
 <template>
     <div class="Column"
     v-for="col in posts">
-        <Column></Column>
+        <Column :ColumnsId=n.Column_Id></Column>
     </div>
 </template>
 

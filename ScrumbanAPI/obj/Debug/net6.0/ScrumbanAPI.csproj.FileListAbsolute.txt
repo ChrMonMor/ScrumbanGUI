@@ -58,3 +58,6 @@ C:\Users\HFGF\Vue\Scrumban\ScrumbanAPI\obj\Debug\net6.0\ScrumbanAPI.pdb
 C:\Users\HFGF\Vue\Scrumban\ScrumbanAPI\obj\Debug\net6.0\ScrumbanAPI.genruntimeconfig.cache
 C:\Users\HFGF\Vue\Scrumban\ScrumbanAPI\obj\Debug\net6.0\ref\ScrumbanAPI.dll
 C:\Users\HFGF\Vue\Scrumban\ScrumbanAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\scrumbangui\ScrumbanAPI\obj\Debug\net6.0\ScrumbanAPI.dll
+C:\scrumbangui\ScrumbanAPI\obj\Debug\net6.0\refint\ScrumbanAPI.dll
+C:\scrumbangui\ScrumbanAPI\obj\Debug\net6.0\ScrumbanAPI.pdb

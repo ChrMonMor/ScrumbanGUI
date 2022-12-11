@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ScrumbanAPI"
   ],
-  "SelectedNode": "\\C:\\Users\\christian\\Source\\Repos\\ScrumbanGUI",
+  "SelectedNode": "\\ScrumbanAPI\\ScrumbanAPI.csproj",
   "PreviewInSolutionExplorer": false
 }

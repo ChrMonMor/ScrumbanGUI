@@ -20,12 +20,19 @@ export default {
 
 </script>
 <template>
-  <div class="project" 
-  v-for="n in posts">
-    <Projects :ProjectsId=n.Project_Id></Projects>
-  </div>
+    <div class="tabs">
+        <div class="project"
+             v-for="n in posts">
+            <button class="tablinks">{{n.Name}}</button>
+        </div>
+    </div>
+    <div class="tabcontent">
+        <Projects :ProjectsId=n.Project_Id></Projects>
+    </div>
 </template>
 
 <style scoped>
 
 </style>
+
+
