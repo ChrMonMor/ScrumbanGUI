@@ -8,6 +8,10 @@ export default {
       type : Number,
       required: true
     },
+    ProjectsName:{
+      type : String,
+      required: true
+    }
   },
   name: 'App',
   components: {
@@ -15,29 +19,29 @@ export default {
   },
   data() {
     return {
-      posts: null
+      cols: null,
+      colsURL : "https://localhost:7026/Projects/Columns/"+this.ProjectsId,
+      colsNum : null,
     };
   },
-  computed: {
-    startUrl(){
-      return "https://localhost:7026/Projects/Columns/"+this.ProjectsId;
-    }
-  },
   mounted () {
-    axios.get(startUrl())
-      .then(response => (this.posts = response.data))
+    axios.get(this.colsURL)
+      .then(response => (this.cols = response.data, this.colsNum = ((100 / (response.data.length+1)) + "%")))
   }
 }
-
 </script>
 
 <template>
-    <div class="Column"
-    v-for="col in posts">
-        <Column :ColumnsId=n.Column_Id></Column>
-    </div>
+  <div class="project">
+    <Column v-for="col in cols" :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
+    <Column :NotNewColumn=false></Column>
+  </div>
+
 </template>
 
 <style>
-
+.column {
+  float: left;
+  width: v-bind(colsNum);
+}
 </style>

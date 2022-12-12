@@ -134,13 +134,13 @@ internal class Program
         });
 
         // Query for getting columns for a project
-        app.MapGet("/Project/Columns/{id}", (HttpRequest request) =>
+        app.MapGet("/Projects/Columns/{id}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall("select * from Columns where Project_Id = " + request.RouteValues["id"] + "order by Position ACS"));
+            return JsonConvert.SerializeObject(SqlCall("select * from Columns where Project_Id = " + request.RouteValues["id"] + "order by Position"));
         });
         app.MapGet("/Columns/Items/{id}", (HttpRequest request) =>
         {
-            return JsonConvert.SerializeObject(SqlCall("select * from Items where Column_Id = " + request.RouteValues["id"] + " order by Position ACS"));
+            return JsonConvert.SerializeObject(SqlCall("select * from Items where Column_Id = " + request.RouteValues["id"] + " order by Position"));
         });
 
 
