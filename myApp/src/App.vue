@@ -11,10 +11,8 @@ export default {
       projectURL : 'https://localhost:7026/Projects'
     };
   },
-  mounted () {
-    axios
-      .get(this.projectURL)
-      .then(response => (this.posts = response.data))
+  mounted:function() {
+    this.refreshData();
   },
   methods: {
     openProject(tabname, event) {
@@ -30,13 +28,21 @@ export default {
       document.getElementById(tabname).style.display = "block";
       event.currentTarget.className += " active";
     },
+    refreshData(){
+      axios.get(this.projectURL)
+      .then(response => (this.posts = response.data, this.refreshData()))
+    },
+            createNewProject(){
+                axios.get("https://localhost:7026/Projects/Create/PlaceholderName")
+                .then(response => (this.refreshData(),this.items = response.data))
+            },
   },
 }
 </script>
 <template>
     <div class="tab">
           <button v-for="n in posts" :key="n.Project_Id" class="tablinks" @click="(event) => openProject(n.Name, event)">{{n.Name}}</button>
-          <button>+ Add Project</button>
+          <button @click=createNewProject()>+ Add Project</button>
     </div>
     <div v-for="n in posts" :key="n.Project_Id"  class="tabcontent" v-bind:id=n.Name> 
       <Projects :ProjectsId=n.Project_Id :ProjectsName=n.Name></Projects>

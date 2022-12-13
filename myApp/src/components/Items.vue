@@ -1,5 +1,8 @@
 <script>
-    export default {
+import axios from 'axios';
+
+
+    export default {        
         props: {
             ItemId: {
                 type: Number,
@@ -19,6 +22,14 @@
             NotNewItem: {
                 type: Boolean,
                 required: true
+            },
+            maxPosi: {
+                type: Number,
+            }
+        },
+        methods:{
+            createNewCard(){
+                axios.get("https://localhost:7026/Items/Create/" + this.ItemColumn +"/"+this.maxPosi+"/"+"PlaceholderName"+"/"+"PlaceholderContent")
             }
         }
     }
@@ -30,7 +41,7 @@
         <p>{{this.ItemContent}}</p>
     </div>
     <div v-else class="card">
-        <button>+ Add new Card</button>
+        <button @click=this.createNewCard()>+ Add new Card</button>
     </div>
 </template>
 

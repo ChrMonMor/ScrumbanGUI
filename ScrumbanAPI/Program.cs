@@ -30,6 +30,16 @@ internal class Program
 
         app.UseCors("test");
 
+        //the allmighty Query call
+        app.MapGet("/All/", () =>
+        {
+            return JsonConvert.SerializeObject(SqlCall("select * from Projects inner join Columns on Columns.Project_Id = Projects.Project_Id full outer join Items on Items.Column_Id = Columns.Column_Id order by Projects.Project_Id,  Columns.Column_Id, Items.Position"));
+        });
+        app.MapGet("/All/{id}", (HttpRequest request) =>
+        {
+            return JsonConvert.SerializeObject(SqlCall("select * from Projects inner join Columns on Columns.Project_Id = Projects.Project_Id full outer join Items on Items.Column_Id = Columns.Column_Id where Projects.Project_Id = " + request.RouteValues["id"] +" order by Projects.Project_Id, Columns.Column_Id, Items.Position"));
+        });
+
         // Queries for get all data from a table
         app.MapGet("/Workers/", () =>
         {

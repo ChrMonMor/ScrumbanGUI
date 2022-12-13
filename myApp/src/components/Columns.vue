@@ -4,6 +4,12 @@ import axios from 'axios';
 
     export default {
         props: {
+            projectID:{
+                type: Number,
+            },
+            colNums:{
+                type: Number,
+            },
             ColumnsId: {
                 type: Number,
             },
@@ -19,11 +25,11 @@ import axios from 'axios';
         data() {
             return {
                 items: null,
+                posMay : 1
             };
         },
-        mounted() {
-            axios.get(this.itemURL())
-                .then(response => (this.items = response.data))
+        mounted:function() {
+            this.refreshData();
         },
         methods:{
             itemURL(){
@@ -31,18 +37,27 @@ import axios from 'axios';
                     return "https://localhost:7026/Columns/Items/" + this.ColumnsId;
                 }
                 return null;
+            },
+            createNewColumn(){
+                axios.get("https://localhost:7026/Columns/Create/" + this.projectID +"/"+this.colNums+"/"+"PlaceholderName"+"/"+"255")
+                .then(response => (this.refreshData(),this.items = response.data))
+            },
+            refreshData(){
+                axios.get(this.itemURL())
+                .then(response => (this.items = response.data, this.posMay = response.data.length+1, this.refreshData()))
             }
         }
-}
+    }
+
 </script>
 
 <template>
     <div v-if=this.NotNewColumn class="column">
         <Item v-for="n in items" :ItemId=n.Item_Id :ItemColumn=n.Column_Id :ItemPosition=n.Position :ItemName=n.Name :ItemContent=n.Content :NotNewItem=true></Item>
-        <item :NotNewItem=false></item>
+        <item :maxPosi=this.posMay :ItemColumn=this.ColumnsId :NotNewItem=false ></item>
     </div>
     <div v-else class="column">
-        <button>+ Add New Category</button>
+        <button @click=createNewColumn()>+ Add New Category</button>
     </div>
 </template>
 

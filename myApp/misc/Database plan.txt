@@ -63,12 +63,6 @@ CREATE TABLE [dbo].[Items]
 	[Item_Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] NVARCHAR(50) NOT NULL,
 	[Content] NVARCHAR(255) NOT NULL,
-
-	CONSTRAINT FK_Worker_Id FOREIGN KEY (Item_Id)
-	REFERENCES [dbo].[Workers] (Worker_Id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-
 	CONSTRAINT FK_Column_Id FOREIGN KEY (Item_Id)
 	REFERENCES [dbo].[Columns] (Column_Id)
         ON DELETE CASCADE
