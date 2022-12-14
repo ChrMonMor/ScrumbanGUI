@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       cols: null,
-      colsURL : "https://localhost:7026/Projects/Columns/"+this.ProjectsId,
+      colsURL : variables.API_URL+"Projects/Columns/"+this.ProjectsId,
       colsNum : null,
       colMax: 0,
     };
@@ -33,13 +33,16 @@ export default {
       axios.get(this.colsURL)
       .then(response => (this.cols = response.data, this.colsNum = ((100 / (response.data.length+1)) + "%"), this.colMax = response.data.length, this.refreshData()))
     },
+    deleteClick(id){
+      axios.get(variables.API_URL+"Projects/delete/"+id);
+    }
   }
 }
 </script>
 
 <template>
   <div class="project">
-    <Column v-for="col in cols" :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
+    <Column v-for="col in cols" :ColPos=col.Position :Limit=col.Limit :ColumnName=col.Name :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
     <Column :colNums=this.colMax :projectID=this.ProjectsId :NotNewColumn=false ></Column>
   </div>
 

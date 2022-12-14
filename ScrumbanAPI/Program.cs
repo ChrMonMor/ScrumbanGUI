@@ -93,17 +93,17 @@ internal class Program
         {
             SqlUpdate($"update Items set " +
                 $"Column_Id = {request.RouteValues["cid"]}, " +
-                $"Position = {request.RouteValues["name"]}, " + 
+                $"Position = {request.RouteValues["position"]}, " + 
                 $"Name = '{request.RouteValues["name"]}', " + 
                 $"Content = '{request.RouteValues["content"]}'  " + 
                 $"where Item_Id = {request.RouteValues["id"]}");
         });
         app.MapGet("/Columns/Update/{id}/{position}/{name}/{limit}", (HttpRequest request) => // note that columns cant change projects
         {
-        SqlUpdate($"update Columns set " +
+            SqlUpdate($"update Columns set " +
                 $"Position = {request.RouteValues["position"]}, " +
                 $"Name = '{request.RouteValues["name"]}', " +
-                $"Limit =  {request.RouteValues["limit"]}" +
+                $"Limit =  {request.RouteValues["limit"]} " +
                 $"where Column_Id = {request.RouteValues["id"]}");
         });
 
@@ -128,19 +128,19 @@ internal class Program
         // Queries for deleting a single row in a table
         app.MapGet("/Workers/delete/{id}", (HttpRequest request) =>
         {
-            SqlCall("delete from Workers where Worker_Id = " + request.RouteValues["id"]);
+            SqlUpdate("delete from Workers where Worker_Id = " + request.RouteValues["id"]);
         });
         app.MapGet("/Projects/delete/{id}", (HttpRequest request) =>
         {
-            SqlCall("delete from Projects where Project_Id = " + request.RouteValues["id"]);
+            SqlUpdate("delete from Projects where Project_Id = " + request.RouteValues["id"]);
         });
         app.MapGet("/Items/delete/{id}", (HttpRequest request) =>
         {
-            SqlCall("delete from Items where Item_Id = " + request.RouteValues["id"]);
+            SqlUpdate("delete from Items where Item_Id = " + request.RouteValues["id"]);
         });
         app.MapGet("/Columns/delete/{id}", (HttpRequest request) =>
         {
-            SqlCall("delete from Columns where Column_Id = " + request.RouteValues["id"]);
+            SqlUpdate("delete from [dbo].[Columns] where Column_Id = " + request.RouteValues["id"]);
         });
 
         // Query for getting columns for a project

@@ -8,7 +8,11 @@ export default {
     return {
       posts: null,
       mainProject: 1,
-      projectURL : 'https://localhost:7026/Projects'
+      projectURL : variables.API_URL+'Projects',
+      trashcan : `<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>`,
+      trashOff : true,
+      projectsNewName : "",
+      showV : false,
     };
   },
   mounted:function() {
@@ -32,21 +36,47 @@ export default {
       axios.get(this.projectURL)
       .then(response => (this.posts = response.data, this.refreshData()))
     },
-            createNewProject(){
-                axios.get("https://localhost:7026/Projects/Create/PlaceholderName")
-                .then(response => (this.refreshData(),this.items = response.data))
-            },
+    createNewProject(){
+      axios.get(variables.API_URL+"Projects/Create/PlaceholderName")
+      .then(response => (this.refreshData(),this.posts = response.data))
+    },
+    deleteClick(id){
+      axios.get(variables.API_URL+"Projects/delete/"+id)
+      .then(response => (this.refreshData(),this.posts = response.data))
+    },
+    updateClick(id){
+      axios.get(variables.API_URL+"Projects/Update/"+id+"/"+this.projectsNewName)
+      .then(response => (this.refreshData(),this.posts = response.data))
+    },
+    updateOptionClick(){
+      if (this.showV) {
+        this.showV = false;
+      } else {
+        this.showV = true;
+      }
+    },
   },
 }
+
 </script>
 <template>
     <div class="tab">
-          <button v-for="n in posts" :key="n.Project_Id" class="tablinks" @click="(event) => openProject(n.Name, event)">{{n.Name}}</button>
-          <button @click=createNewProject()>+ Add Project</button>
+      <div v-for="n in posts" :key="n.Project_Id" >
+          <button @dblclick=updateOptionClick() class="tablinks" @click="(event) => openProject(n.Name+n.Project_Id, event)">
+            {{n.Name}} <div v-show="showV"><input type="text" class="form-control" v-model="projectsNewName"/> <button @click="updateClick(n.Project_Id)">Rename</button></div>
+          </button>
+          <button id="deleteThis" @click=deleteClick(n.Project_Id)>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </button>
+      </div>
+      <button @click=createNewProject()>+ Add Project</button>
     </div>
-    <div v-for="n in posts" :key="n.Project_Id"  class="tabcontent" v-bind:id=n.Name> 
+    <div v-for="n in posts" :key="n.Project_Id"  class="tabcontent" v-bind:id=n.Name+n.Project_Id >  
       <Projects :ProjectsId=n.Project_Id :ProjectsName=n.Name></Projects>
     </div>
+
 </template>
 
 <style scoped>
