@@ -48,11 +48,13 @@ export default {
       axios.get(variables.API_URL+"Projects/Update/"+id+"/"+this.projectsNewName)
       .then(response => (this.refreshData(),this.posts = response.data))
     },
-    updateOptionClick(){
-      if (this.showV) {
-        this.showV = false;
+    updateOptionClick(id){
+      if (document.getElementById("showEdit"+id).style.display = "none") {
+      document.getElementById("showEdit"+id).style.display = "block";
+      document.getElementById("showName"+id).style.display = "none";
       } else {
-        this.showV = true;
+      document.getElementById("showEdit"+id).style.display = "none";
+      document.getElementById("showName"+id).style.display = "block";
       }
     },
   },
@@ -62,9 +64,12 @@ export default {
 <template>
     <div class="tab">
       <div v-for="n in posts" :key="n.Project_Id" >
-          <button @dblclick=updateOptionClick() class="tablinks" @click="(event) => openProject(n.Name+n.Project_Id, event)">
-            {{n.Name}} <div v-show="showV"><input type="text" class="form-control" v-model="projectsNewName"/> <button @click="updateClick(n.Project_Id)">Rename</button></div>
+        <div v-bind:id="'showName'+n.Project_Id">
+          <button @dblclick=updateOptionClick(n.Project_Id) class="tablinks" @click="(event) => openProject(n.Name+n.Project_Id, event)">
+            {{n.Name}} 
           </button>
+        </div>
+          <div v-bind:id="'showEdit'+n.Project_Id" style="display: none;"><input type="text" class="form-control" v-model="projectsNewName" /> <button @click="updateClick(n.Project_Id)">Rename</button></div>
           <button id="deleteThis" @click=deleteClick(n.Project_Id)>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
