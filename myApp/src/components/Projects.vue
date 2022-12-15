@@ -34,6 +34,9 @@ export default {
       .then(response => (this.cols = response.data, this.colsNum = ((100 / (response.data.length+1)) + "%"), this.colMax = response.data.length, this.refreshData()))
     },
     deleteClick(id){
+      if(!confirm("Are you sure you want to delete "+ this.ProjectsName +"?")){
+        return;
+      }
       axios.get(variables.API_URL+"Projects/delete/"+id);
     }
   }
@@ -41,16 +44,28 @@ export default {
 </script>
 
 <template>
-  <div class="project">
-    <Column v-for="col in cols" :ColPos=col.Position :Limit=col.Limit :ColumnName=col.Name :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
-    <Column :colNums=this.colMax :projectID=this.ProjectsId :NotNewColumn=false ></Column>
+  <div>
+    <ul class="projectlist">
+      <li v-for="col in cols" :key=col.Column_Id >
+        <Column :ColPos=col.Position :Limit=col.Limit :ColumnName=col.Name :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
+      </li>
+      <li><Column :colNums=this.colMax :projectID=this.ProjectsId :NotNewColumn=false ></Column></li>
+    </ul>
+    
   </div>
 
 </template>
 
-<style>
-.column {
-  float: left;
-  width: v-bind(colsNum);
+<style scope>
+
+li{
+  vertical-align: baseline;
 }
+.projectlist{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
 </style>
