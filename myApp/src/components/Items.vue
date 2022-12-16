@@ -48,9 +48,9 @@ import axios from 'axios';
                 axios.get(variables.API_URL+"Items/Create/" + this.ItemColumn +"/"+this.maxPosi+"/"+"PlaceholderName"+"/"+"PlaceholderContent")
             },
             deleteClick(id){
-      if(!confirm("Are you sure you want to delete "+ this.ItemName +"?")){
-        return;
-      }
+                if(!confirm("Are you sure you want to delete "+ this.ItemName +"?")){
+                    return;
+                }
                 axios.get(variables.API_URL+"Items/delete/"+id);
             },
             updateClick(id,cid){
@@ -86,18 +86,19 @@ import axios from 'axios';
                 document.getElementById("showItemContentEdit"+id).focus();
                 }
             },
-            drag(ev) {
-                ev.dataTransfer.setData("text", ev.target.id);
-            },
-            onDrop(ev) {
-                const itemID = evt.dataTransfer.getData('itemID')      
-                const item = this.items.find((item) => item.id == itemID)     
-                item.list = list
+            onDrop(ev,cid, pos) {
+                const itemID = ev.dataTransfer.getData('itemID'); 
+                axios.get(variables.API_URL+"Items/ItemsNewPositon/"+itemID+"/"+cid+"/"+pos+"")
+                .then((response) => {
+                    this.posts = response.data;
+                    document.getElementsByClassName("dropSpace").style.display = "none";
+                })
             },
             startDrag(event, item) {
-                event.dataTransfer.dropEffect = "move"
-                evene.dataTransfer.effectAllowed = "move"
-                event.dataTransfer.setData('itemID',item.id)
+                event.dataTransfer.dropEffect = "move";
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData('itemID',item);
+                document.getElementsByClassName("dropSpace").style.display = "block";
             },
 
 
@@ -107,10 +108,10 @@ import axios from 'axios';
 </script>
 
 <template>
-    <div class="dropbasket" @drop="onDrop(event, this.ItemId, this.ItemColumn)"  @dragover.prevent  @dragenter.prevent>
-        <div v-if=this.NotNewItem class="card blue" draggable="true" @dragstart="drag(event)" >
+    <div v-if=this.NotNewItem class="dropbasket" @drop="(event) => onDrop(event, this.ItemColumn, this.ItemPosition)"  @dragover.prevent  @dragenter.prevent>
+        <div class="card blue" draggable="true" @dragstart="(event) => startDrag(event, this.ItemId)" >
             <div class="lighter" @click="updateOptionClick('name',this.ItemId)">
-                <h4 v-bind:id="'showItemNameName'+this.ItemId">{{this.ItemName}}</h4>
+                <h4 @click="updateOptionClick('name',this.ItemId)" v-bind:id="'showItemNameName'+this.ItemId">{{this.ItemName}}</h4>
                 <input v-bind:id="'showItemNameEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewName" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/> 
             </div>
             <div  class="lighter" @click="updateOptionClick('content', this.ItemId)">
@@ -123,10 +124,15 @@ import axios from 'axios';
                 </svg>
             </pre>
         </div>
-        <div v-else class="card">
+    </div>
+    <div v-else class="dropbasket" @drop="(event) => onDrop(event, this.ItemColumn, this.maxPosi)"  @dragover.prevent  @dragenter.prevent>
+        <div class="card dropSpace" style="display:none;">
+            <div class="lighter" >
+            </div>
+        </div>
+        <div class="card">
             <button @click=this.createNewCard()>+ Add new Card</button>
         </div>
-
     </div>
 </template>
 

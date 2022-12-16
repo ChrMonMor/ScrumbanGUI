@@ -31,7 +31,7 @@ export default {
   methods:{
     refreshData(){
       axios.get(this.colsURL)
-      .then(response => (this.cols = response.data, this.colsNum = ((100 / (response.data.length+1)) + "%"), this.colMax = response.data.length, this.refreshData()))
+      .then(response => (this.cols = response.data, this.colsNum = ((100 / (response.data.length+1)) + "%"), this.colMax = response.data.length+1, this.refreshData()))
     },
     deleteClick(id){
       if(!confirm("Are you sure you want to delete "+ this.ProjectsName +"?")){

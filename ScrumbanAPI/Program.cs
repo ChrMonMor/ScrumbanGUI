@@ -136,11 +136,11 @@ internal class Program
         });
         app.MapGet("/Items/delete/{id}", (HttpRequest request) =>
         {
-            SqlUpdate("delete from Items where Item_Id = " + request.RouteValues["id"]);
+            SqlUpdate("EXEC DeleteItem @id = " + request.RouteValues["id"]);
         });
         app.MapGet("/Columns/delete/{id}", (HttpRequest request) =>
         {
-            SqlUpdate("delete from [dbo].[Columns] where Column_Id = " + request.RouteValues["id"]);
+            SqlUpdate("EXEC DeleteColumn @id = " + request.RouteValues["id"]);
         });
 
         // Query for getting columns for a project
@@ -151,6 +151,10 @@ internal class Program
         app.MapGet("/Columns/Items/{id}", (HttpRequest request) =>
         {
             return JsonConvert.SerializeObject(SqlCall("select * from Items where Column_Id = " + request.RouteValues["id"] + " order by Position"));
+        });
+        app.MapGet("/Items/ItemsNewPositon/{id}/{cid}/{pos}", (HttpRequest request) =>
+        {
+            SqlUpdate($"EXEC ItemsNewPositon @Item_Id = {request.RouteValues["id"]}, @newCol = {request.RouteValues["cid"]}, @newPos = {request.RouteValues["pos"]}");
         });
 
 
