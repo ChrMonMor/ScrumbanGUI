@@ -35,8 +35,9 @@ import axios from 'axios';
             return {
                 items: null,
                 posMay : 1,
-                colNewName :"",
+                colNewName :"Placeholder Name",
                 showV : false,
+                limitColor: '',
             };
         },
         mounted:function() {
@@ -50,8 +51,14 @@ import axios from 'axios';
                 return null;
             },
             createNewColumn(){
-                axios.get(variables.API_URL+"Columns/Create/" + this.projectID +"/"+this.colNums+"/"+"PlaceholderName"+"/"+"255")
-                .then(response => (this.refreshData(),this.items = response.data))
+                axios.get(variables.API_URL+"Columns/Create/" + this.projectID +"/"+this.colNums+"/"+this.colNewName+"/"+"255")
+                .then((response) => {
+                    this.refreshData();
+                    this.items = response.data;
+                    this.colNewName = "";
+                    document.getElementById("showColEdit").style.display = "none";
+                    document.getElementById("showColName").style.display = "block";
+                })
             },
             refreshData(){
                 axios.get(this.itemURL())
@@ -81,15 +88,27 @@ import axios from 'axios';
                 document.getElementById("inputColEdit"+id).focus();
                 }
             },
-        }
+        },
+        computed:{
+            limitColors(){
+                if (this.posMay-1 > this.Limit) {
+                    this.limitColor = 'red';
+                } else if (this.posMay-1 == this.Limit) {
+                    this.limitColor = 'green';
+                } else {
+                    this.limitColor = 'black';
+                }
+            },
+        },
     }
 
 </script>
 
 <template>
-    <div v-if=this.NotNewColumn class="columnColumn">
+    <div v-if=this.NotNewColumn class="columnColumn cyan">
         <div v-bind:id="'showColName'+this.ColumnsId" @click="updateOptionClick(this.ColumnsId)">
-            <h1 >{{this.ColumnName}}</h1>
+            <h3 >{{this.ColumnName}}</h3>
+            <p style="text-align: center; font-size: x-small; padding: 0px; margin: 0px; border: 0px; color: v-bind(limitColors());">{{ this.posMay-1 }} / {{ this.Limit }}</p>
         </div>
         <div v-bind:id="'showColEdit'+this.ColumnsId"  style="display: none;">
             <input v-bind:id="'inputColEdit'+this.ColumnsId"  type="text" class="form-control" v-model="colNewName" @focusout="updateClick(this.ColumnsId)" @keyup.enter="updateClick(this.ColumnsId)"/>
@@ -107,8 +126,11 @@ import axios from 'axios';
         </ul>
         
     </div>
-    <div v-else class="column">
-        <button @click=createNewColumn()>+ Add New Category</button>
+    <div v-else class="columnColumn orange">
+        <button v-bind:id="'showColName'" style="display: block; margin: 0px auto;" @click="updateOptionClick('')">+ Add New Category</button>
+        <div v-bind:id="'showColEdit'"  style="display: none;">
+            <input v-bind:id="'inputColEdit'"  type="text" class="form-control" v-model="colNewName" @focusout="createNewColumn()" @keyup.enter="createNewColumn()"/>
+        </div>
     </div>
 </template>
 
@@ -136,8 +158,8 @@ import axios from 'axios';
     padding: 8px;
     margin: 4px;  
     background-color: var(--veryLightGray);
-  width: 250px;
   position: relative;
+  width: 250px;
   display: inline-block;
 }
 .columnList {
@@ -150,16 +172,17 @@ import axios from 'axios';
   position: absolute;
   top: 0;
   right: 0;
-  padding: 8px;
+  padding: 4px;
 }
 .bi-x{
   cursor: pointer;
   color: var(--varyDarkBlue);
 }
-h1 {
+h3 {
     word-wrap: break-word;
     color: var(--varyDark);
     font-weight: var(--weight3);
     padding: 4px;
+    text-align: center;
 }
 </style>

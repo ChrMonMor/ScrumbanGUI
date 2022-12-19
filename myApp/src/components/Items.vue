@@ -45,7 +45,13 @@ import axios from 'axios';
         },
         methods:{
             createNewCard(){
-                axios.get(variables.API_URL+"Items/Create/" + this.ItemColumn +"/"+this.maxPosi+"/"+"PlaceholderName"+"/"+"PlaceholderContent")
+                axios.get(variables.API_URL+"Items/Create/" + this.ItemColumn +"/"+this.maxPosi+"/"+this.itemNewName+"/"+"Placeholder Content")
+                .then((response) =>{
+                    this.itemNewName = "";
+                    this.itemNewContent = "";
+                    document.getElementById("showItemNameEdit000"+this.ItemColumn).style.display = "none";
+                    document.getElementById("showItemNameName000"+this.ItemColumn).style.display = "block";
+                })
             },
             deleteClick(id){
                 if(!confirm("Are you sure you want to delete "+ this.ItemName +"?")){
@@ -66,8 +72,8 @@ import axios from 'axios';
                     this.itemNewName = "";
                     this.itemNewContent = "";
                     document.getElementById("showItemNameEdit"+id).style.display = "none";
-                    document.getElementById("showItemContentEdit"+id).style.display = "none";
                     document.getElementById("showItemNameName"+id).style.display = "block";
+                    document.getElementById("showItemContentEdit"+id).style.display = "none";
                     document.getElementById("showItemContentName"+id).style.display = "block";
                 })
             },
@@ -130,8 +136,9 @@ import axios from 'axios';
             <div class="lighter" >
             </div>
         </div>
-        <div class="card red">
-            <button @click=this.createNewCard()>+ Add new Card</button>
+        <div class="card orange">
+            <button v-bind:id="'showItemNameName000'+this.ItemColumn" @click="updateOptionClick('name','000'+this.ItemColumn)">+ Add new Card</button>
+            <input v-bind:id="'showItemNameEdit000'+this.ItemColumn" type="text" class="form-control" v-model="itemNewName" @focusout="this.createNewCard()" @keyup.enter="this.createNewCard()" style="display: none;"/> 
         </div>
     </div>
 </template>

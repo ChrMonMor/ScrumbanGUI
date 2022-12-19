@@ -149,18 +149,6 @@ export default {
     --weight2: 400;
     --weight3: 600;
 }
-.cyan {
-    border-top: 3px solid var(--cyan);
-}
-.red {
-    border-top: 3px solid var(--red);
-}
-.blue {
-    border-top: 3px solid var(--blue);
-}
-.orange {
-    border-top: 3px solid var(--orange);
-}
 </style>
 
 

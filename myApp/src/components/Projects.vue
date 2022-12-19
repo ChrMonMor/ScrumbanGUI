@@ -23,6 +23,7 @@ export default {
       colsURL : variables.API_URL+"Projects/Columns/"+this.ProjectsId,
       colsNum : null,
       colMax: 0,
+      myColWid: 1,
     };
   },
   mounted:function () {
@@ -39,7 +40,12 @@ export default {
       }
       axios.get(variables.API_URL+"Projects/delete/"+id);
     }
-  }
+  },
+  computed:{
+    colsWidth(){
+      return (this.myColWid/this.colMax)*100+'%';
+    },
+  },
 }
 </script>
 
@@ -47,7 +53,7 @@ export default {
   <div>
     <ul class="projectlist">
       <li v-for="col in cols" :key=col.Column_Id >
-        <Column :ColPos=col.Position :Limit=col.Limit :ColumnName=col.Name :ColumnsId=col.Column_Id :NotNewColumn=true></Column>
+        <Column :ColPos=col.Position :Limit=col.Limit :ColumnName=col.Name :ColumnsId=col.Column_Id :NotNewColumn=true :colNums=this.colMax></Column>
       </li>
       <li><Column :colNums=this.colMax :projectID=this.ProjectsId :NotNewColumn=false ></Column></li>
     </ul>
@@ -66,6 +72,7 @@ li{
   padding: 0;
   margin: 0;
   display: flex;
+  max-width: v-bind(colsWidth);
 }
 :root {
     --red: hsl(0, 78%, 62%);
@@ -80,18 +87,6 @@ li{
     --weight1: 200;
     --weight2: 400;
     --weight3: 600;
-}
-.cyan {
-    border-top: 3px solid var(--cyan);
-}
-.red {
-    border-top: 3px solid var(--red);
-}
-.blue {
-    border-top: 3px solid var(--blue);
-}
-.orange {
-    border-top: 3px solid var(--orange);
 }
 
 </style>
