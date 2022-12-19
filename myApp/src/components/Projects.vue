@@ -67,5 +67,31 @@ li{
   margin: 0;
   display: flex;
 }
+:root {
+    --red: hsl(0, 78%, 62%);
+    --cyan: hsl(180, 62%, 55%);
+    --orange: hsl(34, 97%, 64%);
+    --blue: hsl(212, 86%, 64%);
+    --varyDarkBlue: hsl(234, 12%, 34%);
+    --varyDark: hsl(234, 12%, 24%);
+    --grayishBlue: hsl(229, 6%, 66%);
+    --veryLightGray: hsl(0, 0%, 96%);
+    --veryLight: hsl(0, 0%, 100%);
+    --weight1: 200;
+    --weight2: 400;
+    --weight3: 600;
+}
+.cyan {
+    border-top: 3px solid var(--cyan);
+}
+.red {
+    border-top: 3px solid var(--red);
+}
+.blue {
+    border-top: 3px solid var(--blue);
+}
+.orange {
+    border-top: 3px solid var(--orange);
+}
 
 </style>

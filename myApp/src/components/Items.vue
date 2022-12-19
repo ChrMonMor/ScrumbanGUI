@@ -111,12 +111,12 @@ import axios from 'axios';
     <div v-if=this.NotNewItem class="dropbasket" @drop="(event) => onDrop(event, this.ItemColumn, this.ItemPosition)"  @dragover.prevent  @dragenter.prevent>
         <div class="card blue" draggable="true" @dragstart="(event) => startDrag(event, this.ItemId)" >
             <div class="lighter" @click="updateOptionClick('name',this.ItemId)">
-                <h4 @click="updateOptionClick('name',this.ItemId)" v-bind:id="'showItemNameName'+this.ItemId">{{this.ItemName}}</h4>
+                <h5 @click="updateOptionClick('name',this.ItemId)" v-bind:id="'showItemNameName'+this.ItemId">{{this.ItemName}}</h5>
                 <input v-bind:id="'showItemNameEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewName" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/> 
             </div>
             <div  class="lighter" @click="updateOptionClick('content', this.ItemId)">
                 <p v-bind:id="'showItemContentName'+this.ItemId">{{this.ItemContent}}</p>
-                <input v-bind:id="'showItemContentEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewContent" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/>
+                <textarea v-bind:id="'showItemContentEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewContent" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/>
             </div>
             <pre class="close" id="deleteThis" >
                 <svg @click=deleteClick(this.ItemId) xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
@@ -130,7 +130,7 @@ import axios from 'axios';
             <div class="lighter" >
             </div>
         </div>
-        <div class="card">
+        <div class="card red">
             <button @click=this.createNewCard()>+ Add new Card</button>
         </div>
     </div>
@@ -213,7 +213,7 @@ body {
     }
     
 }
-h4 {
+h5 {
     word-wrap: break-word;
     color: var(--varyDarkBlue);
     font-weight: var(--weight3);
