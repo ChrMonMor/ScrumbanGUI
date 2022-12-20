@@ -88,5 +88,27 @@ li{
     --weight2: 400;
     --weight3: 600;
 }
+@media (max-width: 450px) {
+    .projectlist{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-width: 450px;
+    display: block;
+  }
+}
+
+@media (max-width: 950px) and (min-width: 450px) {
+    .projectlist{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+    display: block;
+  }
+}
+@media (min-width: 950px) {
+    
+}
 
 </style>
