@@ -156,6 +156,10 @@ internal class Program
         {
             SqlUpdate($"EXEC ItemsNewPositon @Item_Id = {request.RouteValues["id"]}, @newCol = {request.RouteValues["cid"]}, @newPos = {request.RouteValues["pos"]}");
         });
+        app.MapGet("Columns/ColumnsNewPositon/{id}/{pos}", (HttpRequest request) =>
+        {
+            SqlUpdate($"EXEC ColumnsNewPositon @Column_Id = {request.RouteValues["id"]}, @newPos = {request.RouteValues["pos"]}");
+        });
 
 
         // runs the app and needs to be at the end!!!!

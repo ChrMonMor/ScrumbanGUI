@@ -118,17 +118,17 @@ import axios from 'axios';
         <div class="card blue" draggable="true" @dragstart="(event) => startDrag(event, this.ItemId)" >
             <div class="lighter" @click="updateOptionClick('name',this.ItemId)">
                 <h5 @click="updateOptionClick('name',this.ItemId)" v-bind:id="'showItemNameName'+this.ItemId">{{this.ItemName}}</h5>
-                <input v-bind:id="'showItemNameEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewName" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/> 
+                <input v-bind:id="'showItemNameEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewName" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/>
+                <pre @click="updateOptionClick('name',this.ItemId)"  class="close" id="deleteThis" >
+                    <svg @click=deleteClick(this.ItemId) xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </pre> 
             </div>
             <div  class="lighter" @click="updateOptionClick('content', this.ItemId)">
                 <p v-bind:id="'showItemContentName'+this.ItemId">{{this.ItemContent}}</p>
                 <textarea v-bind:id="'showItemContentEdit'+this.ItemId" type="text" class="form-control" v-model="itemNewContent" @focusout="updateClick(this.ItemId, this.ItemColumn)" @keyup.enter="updateClick(this.ItemId, this.ItemColumn)" style="display: none;"/>
             </div>
-            <pre class="close" id="deleteThis" >
-                <svg @click=deleteClick(this.ItemId) xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                </svg>
-            </pre>
         </div>
     </div>
     <div v-else class="dropbasket" @drop="(event) => onDrop(event, this.ItemColumn, this.maxPosi)"  @dragover.prevent  @dragenter.prevent>

@@ -38,6 +38,7 @@ import axios from 'axios';
                 colNewName :"Placeholder Name",
                 showV : false,
                 limitColor: '',
+                newLimit: 0,
             };
         },
         mounted:function() {
@@ -56,8 +57,8 @@ import axios from 'axios';
                     this.refreshData();
                     this.items = response.data;
                     this.colNewName = "";
-                    document.getElementById("showColEdit").style.display = "none";
-                    document.getElementById("showColName").style.display = "block";
+                    document.getElementById('showColEdit000'+this.colNums).style.display = "none";
+                    document.getElementById('showColName000'+this.colNums).style.display = "block";
                 })
             },
             refreshData(){
@@ -71,13 +72,14 @@ import axios from 'axios';
                 axios.get(variables.API_URL+"Columns/delete/"+id);
             },
             updateClick(id){
-                axios.get(variables.API_URL+"Columns/Update/"+id+"/"+this.ColPos+"/"+this.colNewName+"/"+this.Limit)
+                axios.get(variables.API_URL+"Columns/Update/"+id+"/"+this.ColPos+"/"+this.colNewName+"/"+this.newLimit)
                 .then((response) => {
                     this.refreshData();
                     this.posts = response.data;
                     this.colNewName = "";
-                    document.getElementById("showColEdit"+id).style.display = "none";
-                    document.getElementById("showColName"+id).style.display = "block";
+                    this.newLimit = 0;
+                    document.getElementById("showColEdit"+id+this.Limit).style.display = "none";
+                    document.getElementById("showColName"+id+this.Limit).style.display = "block";
                 })
             },
             updateOptionClick(id){
@@ -85,8 +87,23 @@ import axios from 'axios';
                 document.getElementById("showColEdit"+id).style.display = "block";
                 document.getElementById("showColName"+id).style.display = "none";
                 this.colNewName = this.ColumnName;
+                this.newLimit = this.Limit;
                 document.getElementById("inputColEdit"+id).focus();
                 }
+            },
+            onDrop(ev, pos) {
+                const columnID = ev.dataTransfer.getData('ColumnID'); 
+                axios.get(variables.API_URL+"Columns/ColumnsNewPositon/"+columnID+"/"+pos+"")
+                .then((response) => {
+                    this.posts = response.data;
+                    document.getElementsByClassName("dropSpace").style.display = "none";
+                })
+            },
+            startDrag(event, column) {
+                event.dataTransfer.dropEffect = "move";
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData('ColumnID',column);
+                document.getElementsByClassName("dropSpace").style.display = "block";
             },
         },
         computed:{
@@ -105,31 +122,36 @@ import axios from 'axios';
 </script>
 
 <template>
-    <div v-if=this.NotNewColumn class="columnColumn cyan">
-        <div v-bind:id="'showColName'+this.ColumnsId" @click="updateOptionClick(this.ColumnsId)">
-            <h3 >{{this.ColumnName}}</h3>
-            <p style="text-align: center; font-size: x-small; padding: 0px; margin: 0px; border: 0px; color: v-bind(limitColors());">{{ this.posMay-1 }} / {{ this.Limit }}</p>
+    <div v-if=this.NotNewColumn class="columnColumn cyan dropbasket" @drop="(event) => onDrop(event, this.ColPos)"  @dragover.prevent  @dragenter.prevent>
+        <div draggable="true" @dragstart="(event) => startDrag(event, this.ColumnsId)">
+            <div v-bind:id="'showColName'+this.ColumnsId" @click="updateOptionClick(this.ColumnsId)">
+                <h3 >{{this.ColumnName}}</h3>
+            </div>
+            <div v-bind:id="'showColEdit'+this.ColumnsId"  style="display: none;">
+                <input v-bind:id="'inputColEdit'+this.ColumnsId"  type="text" class="form-control" v-model="colNewName" @focusout="updateClick(this.ColumnsId)" @keyup.enter="updateClick(this.ColumnsId)"/>
+            </div>
+            <p v-bind:id="'showColName'+this.ColumnsId+this.Limit" @click="updateOptionClick(''+this.ColumnsId+this.Limit)" style="text-align: center; font-size: x-small; padding: 0px; margin: 0px; border: 0px; color: v-bind(limitColors());">{{ this.posMay-1 }} / {{ this.Limit }}</p>
+            <div v-bind:id="'showColEdit'+this.ColumnsId+this.Limit"  style="display: none;">
+                <input v-bind:id="'inputColEdit'+this.ColumnsId+this.Limit"  type="number" min="1" max="255" class="form-control" v-model="newLimit" @focusout="updateClick(this.ColumnsId)" @keyup.enter="updateClick(this.ColumnsId)"/>
+            </div>
+            <span  id="deleteThis"  class="closeColumn">
+                <svg @click=deleteClick(this.ColumnsId) xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </span >
+            <ul class="columnList">
+                <li v-for="n in items" :key=n.Item_Id>
+                    <Item :ItemId=n.Item_Id :ItemColumn=n.Column_Id :ItemPosition=n.Position :ItemName=n.Name :ItemContent=n.Content :NotNewItem=true></Item>
+                </li>
+                <li><item :maxPosi=this.posMay :ItemColumn=this.ColumnsId :NotNewItem=false ></item></li>
+            </ul>
         </div>
-        <div v-bind:id="'showColEdit'+this.ColumnsId"  style="display: none;">
-            <input v-bind:id="'inputColEdit'+this.ColumnsId"  type="text" class="form-control" v-model="colNewName" @focusout="updateClick(this.ColumnsId)" @keyup.enter="updateClick(this.ColumnsId)"/>
-        </div>
-        <span  id="deleteThis"  class="closeColumn">
-            <svg @click=deleteClick(this.ColumnsId) xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-        </span >
-        <ul class="columnList">
-            <li v-for="n in items" :key=n.Item_Id>
-                <Item :ItemId=n.Item_Id :ItemColumn=n.Column_Id :ItemPosition=n.Position :ItemName=n.Name :ItemContent=n.Content :NotNewItem=true></Item>
-            </li>
-            <li><item :maxPosi=this.posMay :ItemColumn=this.ColumnsId :NotNewItem=false ></item></li>
-        </ul>
         
     </div>
     <div v-else class="columnColumn orange">
-        <button v-bind:id="'showColName'" style="display: block; margin: 0px auto;" @click="updateOptionClick('')">+ Add New Category</button>
-        <div v-bind:id="'showColEdit'"  style="display: none;">
-            <input v-bind:id="'inputColEdit'"  type="text" class="form-control" v-model="colNewName" @focusout="createNewColumn()" @keyup.enter="createNewColumn()"/>
+        <button v-bind:id="'showColName000'+this.colNums" style="display: block; margin: 0px auto;" @click="updateOptionClick('000'+this.colNums)">+ Add New Category</button>
+        <div v-bind:id="'showColEdit000'+this.colNums"  style="display: none;">
+            <input v-bind:id="'inputColEdit000'+this.colNums"  type="text" class="form-control" v-model="colNewName" @focusout="this.createNewColumn()" @keyup.enter="this.createNewColumn()"/>
         </div>
     </div>
 </template>
